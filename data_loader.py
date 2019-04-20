@@ -1,24 +1,36 @@
 import os
 import cv2
 import numpy as np
+import tensorflow as tf
+from tensorflow import convert_to_tensor
 from utils import create_labels, norm_data
 from transformation_fcn import resize, crop
 
 
 class Image_Generator():
 
-    def __init__(self, path, batch_size=2, resize=None, ROI=None, classes=None):
+    def __init__(self,
+                 path,
+                 ROI=None,
+                 resize=None,
+                 batch_size=2,
+                 classes=None):
 
         self.ROI = ROI
         self.path = path
         self.resize = resize
         self.classes = classes
-        self.batch_size=batch_size
+        self.batch_size = batch_size
 
-        self.images = [os.path.join(os.path.join(self.path, 'train/images'), x)
-                       for x in os.listdir(os.path.join(self.path, 'train/images'))]
-        self.masks = [os.path.join(os.path.join(self.path, 'train/masks'), x)
-                      for x in os.listdir(os.path.join(self.path, 'train/masks'))]
+        # if len(os.listdir(sels.path)) != 2:
+        #     raise Exception('The Dataset must be consist with 2 folders: images and masks')
+
+        
+
+        self.images = [os.path.join(os.path.join(self.path, 'images'), x)
+                       for x in os.listdir(os.path.join(self.path, 'images'))]
+        self.masks = [os.path.join(os.path.join(self.path, 'masks'), x)
+                      for x in os.listdir(os.path.join(self.path, 'masks'))]
 
     def flow(self):
         i = 0
@@ -43,4 +55,4 @@ class Image_Generator():
 
                 i += 1
 
-            yield np.array(images_batch), np.array(labels_batch)
+            yield np.array(images_batch, dtype=np.float32), np.array(labels_batch, dtype=np.float32)

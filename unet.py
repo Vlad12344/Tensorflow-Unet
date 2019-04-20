@@ -1,5 +1,5 @@
 import tensorflow as tf
-from unet_parts import convlayer_left, convlayer_right
+from unet_parts import convlayer_left, convlayer_right, tf_softmax
 
 class Unet():
 
@@ -14,39 +14,39 @@ class Unet():
 
     # --- make layer ---
     # left
-        l1_1 = convlayer_left(3, self.input_depth, 32)
-        l1_2 = convlayer_left(3, 32, 32)
+        l1_1 = convlayer_left(3, self.input_depth, 6)
+        l1_2 = convlayer_left(3, 6, 6)
 
-        l2_1 = convlayer_left(3, 32, 64)
-        l2_2 = convlayer_left(3, 64, 64)
+        l2_1 = convlayer_left(3, 6, 12)
+        l2_2 = convlayer_left(3, 12, 12)
 
-        l3_1 = convlayer_left(3, 64, 128)
-        l3_2 = convlayer_left(3, 128, 128)
+        l3_1 = convlayer_left(3, 12, 24)
+        l3_2 = convlayer_left(3, 24, 24)
 
-        l4_1 = convlayer_left(3, 128, 256)
-        l4_2 = convlayer_left(3, 256, 256)
+        l4_1 = convlayer_left(3, 24, 48)
+        l4_2 = convlayer_left(3, 48, 48)
 
-        l5_1 = convlayer_left(3, 256, 512)
-        l5_2 = convlayer_left(3, 512, 512)
+        l5_1 = convlayer_left(3, 48, 92)
+        l5_2 = convlayer_left(3, 92, 48)
 
     # right
-        l6_1 = convlayer_right(3, 384, 768)
-        l6_2 = convlayer_left(3, 384, 384)
-        l6_3 = convlayer_left(3, 384, 192)
+        l6_1 = convlayer_right(3, 48, 96)
+        l6_2 = convlayer_left(3, 48, 48)
+        l6_3 = convlayer_left(3, 48, 24)
 
-        l7_1 = convlayer_right(3, 160, 320)
-        l7_2 = convlayer_left(3, 160, 160)
-        l7_3 = convlayer_left(3, 160, 128)
+        l7_1 = convlayer_right(3, 24, 48)
+        l7_2 = convlayer_left(3, 24, 24)
+        l7_3 = convlayer_left(3, 24, 12)
 
-        l8_1 = convlayer_right(3, 96, 192)
-        l8_2 = convlayer_left(3, 96, 96)
-        l8_3 = convlayer_left(3, 96, 48)
+        l8_1 = convlayer_right(3, 12, 24)
+        l8_2 = convlayer_left(3, 12, 12)
+        l8_3 = convlayer_left(3, 12, 6)
 
-        l9_1 = convlayer_right(3, 40, 80)
-        l9_2 = convlayer_left(3, 40, 40)
-        l9_3 = convlayer_left(3, 40, 32)
+        l9_1 = convlayer_right(3, 6, 12)
+        l9_2 = convlayer_left(3, 6, 6)
+        l9_3 = convlayer_left(3, 6, 6)
 
-        l10_final = convlayer_left(1, 32, self.n_classes)
+        l10_final = convlayer_left(1, 6, self.n_classes)
 
         # ---- make graph ----
         layer1_1 = l1_1.feedforward(x)
